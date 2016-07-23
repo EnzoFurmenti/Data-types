@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import "Car.h"
 
 @interface AppDelegate ()
 
@@ -16,8 +18,60 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    ViewController *controller = [[ViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    self.window.rootViewController = navController;
+    
+    
+    Car *car1 = [[Car alloc] init];
+    [car1 setMode:smallLitre];
+    [car1 setColor:whiteColor];
+    
+    
+    Car *car2 = [[Car alloc] init];
+    [car2 setMode:middlelitre];
+    [car2 setColor:blueColor];
+    
+    
+    Car *car3 = [[Car alloc] init];
+    [car3 setMode:largeLitre];
+    [car3 setColor:greenColor];
+
+    
+    CGRect rect3x3 = CGRectMake(3.5f, 3.5f, 3.f, 3.f);
+    NSMutableSet *randomPointSet;
+    for (int i = 0; i<= 1000; i++)
+    {
+        NSValue *randomPointValue = [NSValue valueWithCGPoint:[self randomPoint]];
+        if(!randomPointSet)
+        {
+            randomPointSet = [[NSMutableSet alloc] initWithObjects:randomPointValue, nil];
+        }
+        [randomPointSet addObject:randomPointValue];
+    }
+    
+    for (NSValue *pointValue in randomPointSet)
+    {
+        CGPoint randomPoint = [pointValue CGPointValue];
+        if(CGRectContainsPoint(rect3x3, randomPoint))
+        {
+            NSLog(@"Точка %@ попадает в квадрат 3x3 в центре поля", NSStringFromCGPoint(randomPoint));
+        }
+    }
+    
     // Override point for customization after application launch.
     return YES;
+}
+
+
+- (CGPoint)randomPoint{
+    CGFloat randomX = (float)(arc4random() % 100 / 10.f);
+    CGFloat randomY = (float)(arc4random() % 100 / 10.f);
+    CGPoint randomPoint = CGPointMake(randomX, randomY);
+    return randomPoint;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
